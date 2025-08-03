@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}My Applications{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-6">
+    <h2 class="text-2xl font-semibold mb-4">Your Applications</h2>
+
+    {% if applications %}
+        <div class="space-y-4">
+            {% for task in applications %}
+                <div class="bg-white p-4 rounded shadow border">
+                    <h3 class="text-lg font-bold">{{ task.title }}</h3>
+                    <p class="text-sm text-gray-600">{{ task.subject }} · ₹{{ task.price }}</p>
+                    <p class="text-sm text-gray-500">Deadline: {{ task.deadline }}</p>
+                    <p class="text-xs text-gray-400">Status: {{ task.status | capitalize }}</p>
+                    <div class="mt-2">
+                        <a href="/assignment/{{ task.id }}" class="text-blue-600 hover:underline text-sm">View Assignment</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500">You haven’t applied to any assignments yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

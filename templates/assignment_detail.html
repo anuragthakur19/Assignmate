@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block title %}Assignment Details{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded shadow-md max-w-3xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">{{ task.title }}</h1>
+
+    <div class="space-y-2 text-sm text-gray-700">
+        <p><strong>Subject:</strong> {{ task.subject }}</p>
+        <p><strong>Deadline:</strong> {{ task.deadline }}</p>
+        <p><strong>Pages:</strong> {{ task.pages }}</p>
+        <p><strong>Price:</strong> ₹{{ task.price }}</p>
+        <p>
+            <strong>Status:</strong> 
+            <span class="inline-block px-2 py-1 text-xs rounded-full 
+                {% if task.status == 'open' %}
+                    bg-green-100 text-green-700
+                {% elif task.status == 'assigned' %}
+                    bg-yellow-100 text-yellow-700
+                {% else %}
+                    bg-gray-200 text-gray-600
+                {% endif %}
+            ">
+                {{ task.status|capitalize }}
+            </span>
+        </p>
+    </div>
+
+    <!-- View Profile Button -->
+    <div class="mt-4">
+        {% if role == 'poster' and task.selected_solver_id %}
+            <a href="/profile/{{ task.selected_solver_id }}" class="text-blue-600 text-sm hover:underline">🔍 View Solver Profile</a>
+        {% elif role == 'solver' %}
+            <a href="/profile/{{ task.poster_id }}" class="text-blue-600 text-sm hover:underline">🔍 View Poster Profile</a>
+        {% endif %}
+    </div>
+
+    <hr class="my-6">
+
+    {% if role == 'solver' and task.status == 'open' and not already_applied %}
+        <form action="/apply/{{ task.id }}" method="POST">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                Apply to Solve This
+            </button>
+        </form>
+
+    {% elif role == 'solver' and already_applied %}
+        <p class="text-green-600 font-medium">You have already applied to this assignment.</p>
+
+    {% elif role == 'poster' %}
+        <h2 class="text-xl font-semibold mt-6 mb-2">Applicants</h2>
+
+        {% if applicants %}
+            <div class="space-y-3">
+                {% for app in applicants %}
+                    <div class="border p-3 rounded flex justify-between items-center">
+                        <div>
+                            <p class="font-medium">{{ app.name }}</p>
+                            <p class="text-sm text-gray-500">Rating: {{ app.rating }}★</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="/profile/{{ app.id }}" class="text-sm text-blue-600 hover:underline">View Profile</a>
+                            <form action="/select_solver/{{ task.id }}" method="POST">
+                                <input type="hidden" name="solver_id" value="{{ app.id }}">
+                                <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm transition">
+                                    Select Solver
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500">No one has applied yet.</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

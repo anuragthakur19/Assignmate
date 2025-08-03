@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow-md">
+    <div class="flex items-center space-x-4 mb-6">
+        <img src="https://api.dicebear.com/6.x/initials/svg?seed={{ user.name | urlencode }}" alt="Profile"
+             class="w-16 h-16 rounded-full border border-gray-300 shadow">
+        <div>
+            <h1 class="text-xl font-bold">{{ user.name }}</h1>
+            <p class="text-sm text-gray-600">{{ user.email }}</p>
+            <p class="text-sm text-yellow-600">Rating: {{ user.rating or 'N/A' }}★</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-6 text-center">
+        <div class="bg-gray-100 rounded p-4">
+            <p class="text-sm text-gray-500">Assignments Posted</p>
+            <p class="text-lg font-semibold">{{ user.assigned_count or 0 }}</p>
+        </div>
+        <div class="bg-gray-100 rounded p-4">
+            <p class="text-sm text-gray-500">Assignments Solved</p>
+            <p class="text-lg font-semibold">{{ user.completed_count or 0 }}</p>
+        </div>
+    </div>
+
+    <form method="POST" action="/switch-role">
+        <button class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">
+            Switch Role (Currently: {{ session['role'] | capitalize }})
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block title %}Confirm Payment{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">Payment Confirmation — {{ task.title }}</h2>
+
+<div class="space-y-4">
+    <form action="/confirm_payment/{{ task.id }}" method="POST">
+        {% if role == 'poster' and not task.poster_paid %}
+        <button name="confirm" value="poster" class="bg-blue-600 text-white px-4 py-2 rounded">
+            I have paid the Solver
+        </button>
+        {% endif %}
+        {% if role == 'solver' and not task.solver_received %}
+        <button name="confirm" value="solver" class="bg-green-600 text-white px-4 py-2 rounded">
+            I have received payment
+        </button>
+        {% endif %}
+    </form>
+
+    <div>
+        <p><strong>Poster Confirmation:</strong> {{ '✅' if task.poster_paid else '❌' }}</p>
+        <p><strong>Solver Confirmation:</strong> {{ '✅' if task.solver_received else '❌' }}</p>
+    </div>
+</div>
+{% endblock %}

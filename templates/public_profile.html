@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto mt-6 bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">{{ user.name }}'s Profile</h1>
+
+    <div class="space-y-2 text-sm text-gray-700 mb-6">
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Rating:</strong> {{ user.rating or 0 }} ★</p>
+        <p><strong>Assignments Posted:</strong> {{ user.total_posted or 0 }}</p>
+        <p><strong>Assignments Completed:</strong> {{ user.total_completed or 0 }}</p>
+    </div>
+
+    <hr class="my-4">
+
+    {% if posted %}
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Assignments Posted</h2>
+        <div class="space-y-3">
+            {% for task in posted %}
+                <div class="border p-3 rounded bg-gray-50">
+                    <p class="font-medium">{{ task.title }}</p>
+                    <p class="text-xs text-gray-500">{{ task.subject }} · ₹{{ task.price }}</p>
+                    <p class="text-xs text-gray-400">Status: {{ task.status }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif solved %}
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Assignments Solved</h2>
+        <div class="space-y-3">
+            {% for task in solved %}
+                <div class="border p-3 rounded bg-gray-50">
+                    <p class="font-medium">{{ task.title }}</p>
+                    <p class="text-xs text-gray-500">{{ task.subject }} · ₹{{ task.price }}</p>
+                    <p class="text-xs text-gray-400">Status: {{ task.status }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500">No activity to display.</p>
+    {% endif %}
+</div>
+{% endblock %}

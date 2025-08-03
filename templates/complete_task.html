@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block title %}Complete Task{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">Complete Task — {{ task.title }}</h2>
+
+<form action="/complete/{{ task.id }}" method="POST" class="space-y-4 max-w-md">
+    <label class="block">Rate the Solver (1 to 5 stars):</label>
+    <select name="rating" class="w-full p-2 border rounded" required>
+        <option value="">-- Select Rating --</option>
+        {% for i in range(1, 6) %}
+        <option value="{{ i }}">{{ i }} ★</option>
+        {% endfor %}
+    </select>
+
+    <textarea name="comment" placeholder="Leave a comment (optional)" class="w-full p-2 border rounded h-24"></textarea>
+
+    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
+</form>
+{% endblock %}

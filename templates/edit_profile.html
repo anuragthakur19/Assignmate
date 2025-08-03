@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded shadow mt-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Update Profile</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 text-sm">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/edit_profile">
+        <div class="mb-4">
+            <label class="block text-sm mb-1">Name</label>
+            <input type="text" name="name" value="{{ user.name }}" required
+                   class="w-full border px-3 py-2 rounded focus:outline-none focus:ring">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm mb-1">New Password</label>
+            <input type="password" name="password"
+                   class="w-full border px-3 py-2 rounded focus:outline-none focus:ring">
+        </div>
+
+        <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            Save Changes
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore SQLite database
+database.db
+
+# Ignore editor/IDE junk
+*.log
+.vscode/
+.idea/
+
+# Node or build output (if ever used)
+node_modules/
+dist/
+build/
+
+# macOS and system files
+.DS_Store
+
+# Ignore environment variables
+.env
+
+# Optional: ignore all files in static/uploads or temp folders if any
+# static/uploads/*

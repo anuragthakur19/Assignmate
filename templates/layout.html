@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Assignment Exchange{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white px-6 py-3 shadow-md flex justify-between items-center sticky top-0 z-50">
+        <div class="text-xl font-bold">
+            <a href="/dashboard">📚 AssignMate</a>
+        </div>
+        <div class="space-x-4">
+            {% if session.get('user_id') %}
+                <a href="/profile" class="hover:underline">Profile</a>
+                <a href="/edit_profile" class="hover:underline">Edit</a>
+                <a href="/logout" class="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100 transition">Logout</a>
+            {% else %}
+                <a href="/login" class="hover:underline">Login</a>
+                <a href="/register" class="hover:underline">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-6">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-sm text-gray-500 py-4 border-t">
+        Made with Flask & Tailwind · {{ now().year }}
+    </footer>
+
+</body>
+
+
+</html>
+

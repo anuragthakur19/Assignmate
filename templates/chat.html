@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}Chat{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Chat for: {{ task.title }}</h2>
+
+    <div class="space-y-4 max-h-96 overflow-y-auto border p-3 rounded bg-gray-50">
+        {% for msg in messages %}
+            <div class="{% if msg.sender_id == user_id %}text-right{% else %}text-left{% endif %}">
+                <div class="inline-block px-4 py-2 rounded 
+                    {% if msg.role == 'poster' %}bg-blue-100 text-blue-800
+                    {% elif msg.role == 'solver' %}bg-green-100 text-green-800
+                    {% else %}bg-gray-100 text-gray-700{% endif %}">
+                    <p class="text-xs font-semibold">{{ msg.sender }}</p>
+                    <p>{{ msg.content }}</p>
+                    <p class="text-xs text-gray-500">{{ msg.timestamp }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form action="/chat/{{ task.id }}" method="POST" class="mt-4 flex gap-2">
+        <input name="message" placeholder="Type a message..." class="flex-grow px-3 py-2 border rounded" required>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Send</button>
+    </form>
+
+    <!-- Pay Button -->
+    <div class="mt-6 text-center">
+        <button onclick="showPaymentModal()" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition">
+            Pay / Confirm Delivery
+        </button>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div id="paymentModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+    <div class="bg-white p-6 rounded shadow max-w-sm w-full">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800 text-center">Confirm Transaction</h2>
+        <p class="text-gray-600 text-sm mb-4 text-center">
+            Please confirm if you’ve completed the transaction or received payment.
+        </p>
+        <form action="/confirm_payment_stage/{{ task.id }}" method="POST" class="flex flex-col gap-3">
+            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+                Yes, I Confirm
+            </button>
+            <button type="button" onclick="hidePaymentModal()" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition">
+                Cancel
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+function showPaymentModal() {
+    document.getElementById('paymentModal').classList.remove('hidden');
+}
+function hidePaymentModal() {
+    document.getElementById('paymentModal').classList.add('hidden');
+}
+</script>
+{% endblock %}
